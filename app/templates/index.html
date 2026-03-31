@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Manager</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 40px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .task {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .high { color: red; }
+        .medium { color: orange; }
+        .low { color: green; }
+
+        button {
+            margin-right: 5px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Task Manager</h1>
+
+    <!-- Criar tarefa -->
+    <form method="post" action="/ui/tasks">
+        <input name="title" placeholder="Título" required>
+        <input name="description" placeholder="Descrição">
+
+        <select name="priority">
+            <option value="Alta">Alta</option>
+            <option value="Média">Média</option>
+            <option value="Baixa">Baixa</option>
+        </select>
+
+        <button type="submit">Criar</button>
+    </form>
+
+    <!-- Filtros -->
+    <form method="get" action="/ui">
+        <select name="priority">
+            <option value="">Todas prioridades</option>
+            <option value="Alta">Alta</option>
+            <option value="Média">Média</option>
+            <option value="Baixa">Baixa</option>
+        </select>
+
+        <select name="completed">
+            <option value="">Todos</option>
+            <option value="true">Concluídas</option>
+            <option value="false">Pendentes</option>
+        </select>
+
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <!-- Lista -->
+    {% for task in tasks %}
+
+        {% if edit_id == task.id %}
+
+            <!-- 🔥 MODO EDIÇÃO -->
+            <form method="post" action="/ui/tasks/{{ task.id }}/edit">
+
+                <input type="text" name="title" value="{{ task.title }}" required>
+
+                <input type="text" name="description" value="{{ task.description or '' }}">
+
+                <select name="priority">
+                    <option value="Baixa" {% if task.priority == "Baixa" %}selected{% endif %}>Baixa</option>
+                    <option value="Média" {% if task.priority == "Média" %}selected{% endif %}>Média</option>
+                    <option value="Alta" {% if task.priority == "Alta" %}selected{% endif %}>Alta</option>
+                </select>
+
+                <label>
+                    <input type="checkbox" name="completed" {% if task.completed %}checked{% endif %}>
+                    Done
+                </label>
+
+                <button type="submit">Salvar</button>
+
+                <a href="/ui">Cancelar</a>
+            </form>
+
+        {% else %}
+            <div class="task">
+
+                <strong class="
+                    {% if task.completed %}completed{% endif %}
+                    {{ task.priority | lower }}
+                ">
+                    {{ task.title }}
+                </strong>
+
+                <p>{{ task.description }}</p>
+
+                <small>Prioridade: {{ task.priority.value }}</small>
+
+                <div>
+                    <form method="post" action="/ui/tasks/{{ task.id }}/complete" style="display:inline;">
+                        <button type="submit">
+                            {% if task.completed %}Desfazer{% else %}Concluir{% endif %}
+                        </button>
+                    </form>
+
+                    <form method="post" action="/ui/tasks/{{ task.id }}/delete" style="display:inline;">
+                        <button type="submit">Deletar</button>
+                    </form>
+
+                    <a href="/ui?edit_id={{ task.id }}">
+                        <button type="button">Editar</button>
+                    </a>
+                </div>
+
+            </div>
+        {% endif %}
+    {% endfor %}
+
+</div>
+
+</body>
+</html>
