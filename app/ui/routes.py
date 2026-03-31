@@ -1,4 +1,6 @@
 import os
+from typing import Union
+
 from fastapi import APIRouter, Request, Form, Depends, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -15,14 +17,23 @@ templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
 router = APIRouter()
 
+PRIORITY_LABELS = {
+    "high": "Alta",
+    "medium": "Média",
+    "low": "Baixa",
+}
+
 @router.get("/", response_class=HTMLResponse)
 async def ui_home(
     request: Request,
-    priority: PriorityEnum | None = None,
+    priority: Union[PriorityEnum, str] = "",
     completed: str = "",
     edit_id: int | None = None,
     db: AsyncSession = Depends(get_db),
 ):
+    if not priority:
+        priority = None
+    
     if completed == "":
         converted_completed = None
     else:
@@ -37,6 +48,7 @@ async def ui_home(
             "priority": priority,
             "completed": completed,
             "edit_id": edit_id,
+            "priority_labels": PRIORITY_LABELS,
         },
         request=request,
     )

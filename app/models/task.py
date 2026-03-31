@@ -4,10 +4,9 @@ import enum
 
 
 class PriorityEnum(str, enum.Enum):
-    EMPTY = ""
-    HIGH = "Alta"
-    MEDIUM = "Média"
-    LOW = "Baixa"
+    HIGH = "high"
+    MEDIUM = "medium"
+    LOW = "low"
 
 
 class Task(Base):

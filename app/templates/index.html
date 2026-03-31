@@ -51,9 +51,9 @@
         <input name="description" placeholder="Descrição">
 
         <select name="priority">
-            <option value="Alta">Alta</option>
-            <option value="Média">Média</option>
-            <option value="Baixa">Baixa</option>
+            <option value="high">Alta</option>
+            <option value="medium">Média</option>
+            <option value="low">Baixa</option>
         </select>
 
         <button type="submit">Criar</button>
@@ -63,9 +63,9 @@
     <form method="get" action="/">
         <select name="priority">
             <option value="">Todas prioridades</option>
-            <option value="Alta">Alta</option>
-            <option value="Média">Média</option>
-            <option value="Baixa">Baixa</option>
+            <option value="high">Alta</option>
+            <option value="medium">Média</option>
+            <option value="low">Baixa</option>
         </select>
 
         <select name="completed">
@@ -90,9 +90,9 @@
                 <input type="text" name="description" value="{{ task.description or '' }}">
 
                 <select name="priority">
-                    <option value="Baixa" {% if task.priority == "Baixa" %}selected{% endif %}>Baixa</option>
-                    <option value="Média" {% if task.priority == "Média" %}selected{% endif %}>Média</option>
-                    <option value="Alta" {% if task.priority == "Alta" %}selected{% endif %}>Alta</option>
+                    <option value="low" {% if task.priority == "low" %}selected{% endif %}>Baixa</option>
+                    <option value="medium" {% if task.priority == "medium" %}selected{% endif %}>Média</option>
+                    <option value="high" {% if task.priority == "high" %}selected{% endif %}>Alta</option>
                 </select>
 
                 <label>
@@ -117,7 +117,7 @@
 
                 <p>{{ task.description }}</p>
 
-                <small>Prioridade: {{ task.priority.value }}</small>
+                <small>Prioridade: {{ priority_labels[task.priority] }}</small>
 
                 <div>
                     <form method="post" action="/tasks/{{ task.id }}/complete" style="display:inline;">
