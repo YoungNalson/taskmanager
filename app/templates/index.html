@@ -46,7 +46,7 @@
     <h1>Task Manager</h1>
 
     <!-- Criar tarefa -->
-    <form method="post" action="/ui/tasks">
+    <form method="post" action="/tasks">
         <input name="title" placeholder="Título" required>
         <input name="description" placeholder="Descrição">
 
@@ -60,7 +60,7 @@
     </form>
 
     <!-- Filtros -->
-    <form method="get" action="/ui">
+    <form method="get" action="/">
         <select name="priority">
             <option value="">Todas prioridades</option>
             <option value="Alta">Alta</option>
@@ -83,7 +83,7 @@
         {% if edit_id == task.id %}
 
             <!-- 🔥 MODO EDIÇÃO -->
-            <form method="post" action="/ui/tasks/{{ task.id }}/edit">
+            <form method="post" action="/tasks/{{ task.id }}/edit">
 
                 <input type="text" name="title" value="{{ task.title }}" required>
 
@@ -102,7 +102,7 @@
 
                 <button type="submit">Salvar</button>
 
-                <a href="/ui">Cancelar</a>
+                <a href="/">Cancelar</a>
             </form>
 
         {% else %}
@@ -120,17 +120,17 @@
                 <small>Prioridade: {{ task.priority.value }}</small>
 
                 <div>
-                    <form method="post" action="/ui/tasks/{{ task.id }}/complete" style="display:inline;">
+                    <form method="post" action="/tasks/{{ task.id }}/complete" style="display:inline;">
                         <button type="submit">
                             {% if task.completed %}Desfazer{% else %}Concluir{% endif %}
                         </button>
                     </form>
 
-                    <form method="post" action="/ui/tasks/{{ task.id }}/delete" style="display:inline;">
+                    <form method="post" action="/tasks/{{ task.id }}/delete" style="display:inline;">
                         <button type="submit">Deletar</button>
                     </form>
 
-                    <a href="/ui?edit_id={{ task.id }}">
+                    <a href="/?edit_id={{ task.id }}">
                         <button type="button">Editar</button>
                     </a>
                 </div>
