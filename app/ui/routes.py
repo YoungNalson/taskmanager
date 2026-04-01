@@ -7,7 +7,7 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_db
-from app.crud import task as task_crud
+from app.service import task as task_crud
 from app.schemas.task import TaskCreate, TaskUpdate
 from app.models.task import PriorityEnum
 

@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_db
 from app.schemas.task import TaskCreate, TaskUpdate, TaskResponse
-from app.crud import task as task_crud
+from app.service import task as task_crud
 from app.models.task import PriorityEnum
 
 router = APIRouter(prefix="/tasks", tags=["Tasks"])
