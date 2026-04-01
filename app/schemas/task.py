@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional
 from app.models.task import PriorityEnum
 
@@ -22,6 +22,4 @@ class TaskResponse(BaseModel):
     description: Optional[str]
     priority: PriorityEnum
     completed: bool
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
